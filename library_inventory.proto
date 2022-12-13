@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package libinventory;
+
+// ISBN - a unique string id (a primary key)
+// title - a string
+// author - a string name, for simplicity (normally a separate PB)
+// genre (an enum field, come up with a list of 3-4)
+// publishing year - an integer
+message Book {
+  // required fields are validated in code to maintain best practice
+  optional string isbn = 1;
+  optional string title = 2;
+  optional string author = 3;
+  // Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+  // a year.
+  optional int32 publishingYear = 4;
+
+  enum Genre {
+    FICTION = 0;
+    BIOGRAPHY = 1;
+    HISTORY = 2;
+    TRAVEL = 3;
+  }
+}
+
+// inventory number - kind of, a primary key
+// a Oneof field, which can only refer to a Book object. In the future extensions, we might
+// add more supported types.
+// status - an enum of “available”, “taken”
+message InventoryItem {
+  optional int32 inventorynumber = 0;
+  optional Book oneOf = 1;
+  
+  enum Status {
+    TAKEN = 0;
+    AVAILABLE = 1;
+  }
+}
