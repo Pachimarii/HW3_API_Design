@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package libinventory;
+
+import "library_inventory.proto";
+
+// NOTE: required fields are validated in code to maintain best practices
+// customized default value is not abailable in proto3. 
+// Read more here: https://developers.google.com/protocol-buffers/docs/proto3#default
+
+message CreateBookRequest {
+    Book book = 1;
+}
+
+message CreateBookResponse {
+    bool status = 1;
+    string message = 2; 
+}
+
+message GetBookRequest {
+    string isbn = 1;
+}
+
+message GetBookResponse {
+    bool status = 1;
+    string message = 2;
+    optional Book book = 3;
+}
+
+service InventoryService {
+    // CreateBook - response format doesn't include an object
+    rpc CreateBook(CreateBookRequest) returns (CreateBookResponse) {}
+    // GetBook - given ISBN, retrieve book details
+    rpc GetBook(GetBookRequest) returns (GetBookResponse) {}
+}
+  

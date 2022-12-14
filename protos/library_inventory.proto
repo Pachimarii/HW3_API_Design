@@ -2,19 +2,21 @@ syntax = "proto3";
 
 package libinventory;
 
+// Book:
 // ISBN - a unique string id (a primary key)
 // title - a string
 // author - a string name, for simplicity (normally a separate PB)
-// genre (an enum field, come up with a list of 3-4)
 // publishing year - an integer
+// genre (an enum field, come up with a list of 3-4)
 message Book {
-  // required fields are validated in code to maintain best practice
-  optional string isbn = 1;
-  optional string title = 2;
+  // NOTE: required fields are validated in code to maintain best practices
+  // customized default value is not abailable in proto3. 
+  // Read more here: https://developers.google.com/protocol-buffers/docs/proto3#default
+  string isbn = 1;
+  string title = 2;
   optional string author = 3;
-  // Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-  // a year.
-  optional int32 publishingYear = 4;
+  int32 publishingYear = 4;
+  optional Genre genre = 5; 
 
   enum Genre {
     FICTION = 0;
@@ -24,16 +26,17 @@ message Book {
   }
 }
 
+// InventoryItem:
 // inventory number - kind of, a primary key
 // a Oneof field, which can only refer to a Book object. In the future extensions, we might
 // add more supported types.
 // status - an enum of “available”, “taken”
 message InventoryItem {
-  optional int32 inventorynumber = 0;
-  optional Book oneOf = 1;
-  
+  int32 inventoryNumber = 1;
+  Book oneOf = 2;
+  optional Status status = 3;
   enum Status {
-    TAKEN = 0;
-    AVAILABLE = 1;
+    AVAILABLE = 0;
+    TAKEN = 1;
   }
 }
